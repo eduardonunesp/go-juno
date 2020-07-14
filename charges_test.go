@@ -11,7 +11,7 @@ func TestCreateCharge(t *testing.T) {
 	ClientSecret = os.Getenv("JUNO_CLIENT_SECRET")
 	ResourceToken = os.Getenv("JUNO_RESOURCE_TOKEN")
 
-	result, err := newOauthToken(ClientID, ClientSecret)
+	result, err := NewOauthToken(ClientID, ClientSecret)
 
 	if err != nil {
 		t.Errorf("Failed get authorization token %s\n", err)

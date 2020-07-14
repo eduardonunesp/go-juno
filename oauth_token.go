@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-type oauthTokenResponse struct {
+type OauthTokenResponse struct {
 	AccessToken string `json:"access_token"`
 	TokenType   string `json:"token_type"`
 	ExpiresIn   int64  `json:"expires_in"`
@@ -14,7 +14,7 @@ type oauthTokenResponse struct {
 	JTI         string `json:"jti"`
 }
 
-func newOauthToken(clientID, clientSecret string) (*oauthTokenResponse, error) {
+func NewOauthToken(clientID, clientSecret string) (*OauthTokenResponse, error) {
 	basicToken := b64.StdEncoding.EncodeToString([]byte(clientID + ":" + clientSecret))
 
 	headers := make(map[string]string)
@@ -32,7 +32,7 @@ func newOauthToken(clientID, clientSecret string) (*oauthTokenResponse, error) {
 		return nil, err
 	}
 
-	var response oauthTokenResponse
+	var response OauthTokenResponse
 	err = json.Unmarshal(body, &response)
 
 	if err != nil {

@@ -9,7 +9,7 @@ func TestAuthorizationToken(t *testing.T) {
 	ClientID = os.Getenv("JUNO_CLIENT_ID")
 	ClientSecret = os.Getenv("JUNO_CLIENT_SECRET")
 
-	_, err := newOauthToken(ClientID, ClientSecret)
+	_, err := NewOauthToken(ClientID, ClientSecret)
 
 	if err != nil {
 		t.Error("Failed to request token")
@@ -20,7 +20,7 @@ func TestAuthorizationFailed(t *testing.T) {
 	ClientID = "foo"
 	ClientSecret = "bar"
 
-	oauthToken, err := newOauthToken(ClientID, ClientSecret)
+	oauthToken, err := NewOauthToken(ClientID, ClientSecret)
 
 	if err != nil {
 		t.Error("Failed to request token")

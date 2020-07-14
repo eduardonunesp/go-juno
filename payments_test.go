@@ -13,7 +13,7 @@ func TestCreatePayment(t *testing.T) {
 	ChargeID := os.Getenv("CHARGE_ID")
 	CreditCardHash := os.Getenv("CREDIT_CARD_HASH")
 
-	result, err := newOauthToken(ClientID, ClientSecret)
+	result, err := NewOauthToken(ClientID, ClientSecret)
 
 	if err != nil {
 		t.Errorf("Failed get authorization token")
