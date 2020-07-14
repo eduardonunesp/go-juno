@@ -9,18 +9,19 @@ const (
 )
 
 type Charge struct {
-	Description string  `json:"description"`
-	Amount      float32 `json:"amount"`
+	Description string   `json:"description"`
+	Amount      float32  `json:"amount"`
+	PaymentType []string `json:"paymentTypes"`
 }
 
-type Billing struct {
+type ChargeBilling struct {
 	Name     string `json:"name"`
 	Document string `json:"document"`
 }
 
 type ChargeParams struct {
-	Charge  `json:"charge"`
-	Billing `json:"billing"`
+	Charge        `json:"charge"`
+	ChargeBilling `json:"billing"`
 }
 
 type CreateChargeResponse struct {
@@ -30,6 +31,8 @@ type CreateChargeResponse struct {
 			Code int64  `json:"code"`
 		} `json:"charges"`
 	} `json:"_embedded"`
+
+	ErrorResponse
 }
 
 func CreateCharge(chargeParams ChargeParams, oauthToken string) (*CreateChargeResponse, error) {

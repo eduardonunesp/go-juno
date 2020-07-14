@@ -20,6 +20,15 @@ var (
 	ResourceServer = "https://sandbox.boletobancario.com/api-integration"
 )
 
+type ErrorResponse struct {
+	Status  int    `json:"status,omitempty"`
+	Error   string `json:"error,omitempty"`
+	Details []struct {
+		Message   string `json:"message,omitempty"`
+		ErrorCode string `json:"errorCode,omitempty"`
+	} `json:"details,omitempty"`
+}
+
 type operation struct {
 	headers map[string]string
 	method  string
