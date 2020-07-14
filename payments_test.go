@@ -41,5 +41,4 @@ func TestCreatePayment(t *testing.T) {
 	}
 
 	fmt.Println(response)
-
 }
