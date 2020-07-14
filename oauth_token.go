@@ -12,6 +12,8 @@ type OauthTokenResponse struct {
 	Scope       string `json:"scope"`
 	UserName    string `json:"user_name"`
 	JTI         string `json:"jti"`
+
+	ErrorResponse
 }
 
 func NewOauthToken(clientID, clientSecret string) (*OauthTokenResponse, error) {

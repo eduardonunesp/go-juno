@@ -20,13 +20,13 @@ func TestAuthorizationFailed(t *testing.T) {
 	ClientID = "foo"
 	ClientSecret = "bar"
 
-	oauthToken, err := NewOauthToken(ClientID, ClientSecret)
+	oauthTokenResponse, err := NewOauthToken(ClientID, ClientSecret)
 
 	if err != nil {
 		t.Error("Failed to request token")
 	}
 
-	if oauthToken.AccessToken == "ZXhlbXBsby1jbGllbnQtaWQ6ZXhlbXBsby1jbGllbnQtc2VjcmV0" {
+	if oauthTokenResponse.AccessToken == "ZXhlbXBsby1jbGllbnQtaWQ6ZXhlbXBsby1jbGllbnQtc2VjcmV0" {
 		t.Error("Authorization should fail")
 	}
 }
