@@ -13,9 +13,6 @@ const (
 )
 
 var (
-	ClientID       string
-	ClientSecret   string
-	ResourceToken  string
 	AuthServer     = "https://sandbox.boletobancario.com/authorization-server"
 	ResourceServer = "https://sandbox.boletobancario.com/api-integration"
 )
@@ -44,11 +41,11 @@ func newOperationWith(body []byte) operation {
 	return operation{body: body}
 }
 
-func resourceHeaders(authToken string) map[string]string {
+func resourceHeaders(authToken, resourceToken string) map[string]string {
 	headers := make(map[string]string)
 	headers["Authorization"] = "Bearer " + authToken
 	headers["X-Api-Version"] = "2"
-	headers["X-Resource-Token"] = ResourceToken
+	headers["X-Resource-Token"] = resourceToken
 	headers["Content-Type"] = "application/json"
 	return headers
 }

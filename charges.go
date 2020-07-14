@@ -35,14 +35,14 @@ type CreateChargeResponse struct {
 	ErrorResponse
 }
 
-func CreateCharge(chargeParams ChargeParams, oauthToken string) (*CreateChargeResponse, error) {
+func CreateCharge(chargeParams ChargeParams, oauthToken, resourceToken string) (*CreateChargeResponse, error) {
 	bs, err := json.Marshal(chargeParams)
 
 	if err != nil {
 		return nil, err
 	}
 
-	op := newOperation(bs, ResourceServer+"/charges", methodPOST, resourceHeaders(oauthToken))
+	op := newOperation(bs, ResourceServer+"/charges", methodPOST, resourceHeaders(oauthToken, resourceToken))
 
 	body, err := dispatch(op)
 

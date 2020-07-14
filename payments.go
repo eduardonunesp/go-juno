@@ -47,14 +47,14 @@ type CreatePaymentResponse struct {
 	ErrorResponse
 }
 
-func CreatePayment(paymentParams PaymentParams, oauthToken string) (*CreatePaymentResponse, error) {
+func CreatePayment(paymentParams PaymentParams, oauthToken, ResourceToken string) (*CreatePaymentResponse, error) {
 	bs, err := json.Marshal(paymentParams)
 
 	if err != nil {
 		return nil, err
 	}
 
-	op := newOperation(bs, ResourceServer+"/payments", methodPOST, resourceHeaders(oauthToken))
+	op := newOperation(bs, ResourceServer+"/payments", methodPOST, resourceHeaders(oauthToken, ResourceToken))
 
 	body, err := dispatch(op)
 

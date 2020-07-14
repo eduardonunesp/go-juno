@@ -6,8 +6,8 @@ import (
 )
 
 func TestAuthorizationToken(t *testing.T) {
-	ClientID = os.Getenv("JUNO_CLIENT_ID")
-	ClientSecret = os.Getenv("JUNO_CLIENT_SECRET")
+	ClientID := os.Getenv("JUNO_CLIENT_ID")
+	ClientSecret := os.Getenv("JUNO_CLIENT_SECRET")
 
 	_, err := NewOauthToken(ClientID, ClientSecret)
 
@@ -17,8 +17,8 @@ func TestAuthorizationToken(t *testing.T) {
 }
 
 func TestAuthorizationFailed(t *testing.T) {
-	ClientID = "foo"
-	ClientSecret = "bar"
+	ClientID := "foo"
+	ClientSecret := "bar"
 
 	oauthTokenResponse, err := NewOauthToken(ClientID, ClientSecret)
 

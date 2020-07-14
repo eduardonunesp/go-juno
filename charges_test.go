@@ -7,9 +7,9 @@ import (
 )
 
 func TestCreateCharge(t *testing.T) {
-	ClientID = os.Getenv("JUNO_CLIENT_ID")
-	ClientSecret = os.Getenv("JUNO_CLIENT_SECRET")
-	ResourceToken = os.Getenv("JUNO_RESOURCE_TOKEN")
+	ClientID := os.Getenv("JUNO_CLIENT_ID")
+	ClientSecret := os.Getenv("JUNO_CLIENT_SECRET")
+	ResourceToken := os.Getenv("JUNO_RESOURCE_TOKEN")
 
 	result, err := NewOauthToken(ClientID, ClientSecret)
 
@@ -28,7 +28,7 @@ func TestCreateCharge(t *testing.T) {
 			Name:     "Foo Bar",
 			Document: "96616796060",
 		},
-	}, result.AccessToken)
+	}, result.AccessToken, ResourceToken)
 
 	if err != nil {
 		t.Errorf("Failed to crete charge cause %v\n", err)
