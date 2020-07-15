@@ -2,7 +2,6 @@ package gojuno
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 type Address struct {
@@ -32,7 +31,7 @@ type PaymentParams struct {
 type CreatePaymentResponse struct {
 	TransactionID string `json:"transactionId"`
 	Installments  int    `json:"installments"`
-	Payments      struct {
+	Payments      []struct {
 		ID          string  `json:"id"`
 		ChargeID    string  `json:"chargeId"`
 		Date        string  `json:"date"`
@@ -61,8 +60,6 @@ func CreatePayment(paymentParams PaymentParams, oauthToken, ResourceToken string
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(string(body))
 
 	var response CreatePaymentResponse
 	err = json.Unmarshal(body, &response)
