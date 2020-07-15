@@ -37,8 +37,8 @@ type CreatePaymentResponse struct {
 		ChargeID    string  `json:"chargeId"`
 		Date        string  `json:"date"`
 		ReleaseDate string  `json:"releaseDate"`
-		Amount      float32 `json:"amount"`
-		Fee         float32 `json:"fee"`
+		Amount      float64 `json:"amount"`
+		Fee         float64 `json:"fee"`
 		Type        string  `json:"type"`
 		Status      string  `json:"status"`
 		FailReason  string  `json:"failReason"`

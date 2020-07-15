@@ -10,7 +10,7 @@ const (
 
 type Charge struct {
 	Description string   `json:"description"`
-	Amount      float32  `json:"amount"`
+	Amount      float64  `json:"amount"`
 	PaymentType []string `json:"paymentTypes"`
 }
 
