@@ -1,6 +1,6 @@
 # GO-JUNO
 
-Go-Juno is a third party SDK for [Juno Payment Solutions](https://juno.com.br)
+Go-Juno is a third party SDK for [Juno Solução de Pagamento Online](https://juno.com.br)
 
 ## Install
 
@@ -25,7 +25,7 @@ func CreateToken(ClientID, ClientSecret string) {
   tokenResult, err := gojuno.NewOauthToken(ClientID, ClientSecret)
 
   if err != nil {
-    log.Fatalf("Error on get oauth token %v\n", err)
+    log.Fatalf("Error on get oauth token %+v\n", err)
   }
 
   fmt.Println(tokenResult.AccessToken)
@@ -49,7 +49,7 @@ func Charge(AccessToken, ResourceToken string) {
   }, AccessToken, ResourceToken)
 
   if err != nil {
-    log.Fatalf("Failed to create charge cause %v\n", err)
+    log.Fatalf("Failed to create charge cause %+v\n", err)
   }
 }
 ```
@@ -76,7 +76,7 @@ func Payment(ChargeID, CreditCardHash, AccessToken, ResourceToken string) {
   }, AccessToken, ResourceToken)
 
   if err != nil {
-    log.Fatalf("Failed to create payment cause %v\n", err)
+    log.Fatalf("Failed to create payment cause %+v\n", err)
   }
 }
 ```

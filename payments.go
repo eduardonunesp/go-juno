@@ -2,9 +2,10 @@ package gojuno
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
-type Address struct {
+type AddressParams struct {
 	Street   string `json:"street"`
 	Number   string `json:"number"`
 	City     string `json:"city"`
@@ -12,20 +13,20 @@ type Address struct {
 	PostCode string `json:"postCode"`
 }
 
-type PaymentBilling struct {
-	Email   string `json:"email"`
-	Address `json:"address"`
+type PaymentBillingParams struct {
+	Email         string `json:"email"`
+	AddressParams `json:"address"`
 }
 
-type CreditCardDetails struct {
+type CreditCardDetailsParams struct {
 	CreditCardID   string `json:"creditCardId,omitempty"`
 	CreditCardHash string `json:"creditCardHash,omitempty"`
 }
 
-type PaymentParams struct {
-	ChargeID          string `json:"chargeId"`
-	PaymentBilling    `json:"billing"`
-	CreditCardDetails `json:"creditCardDetails"`
+type CreatePaymentParams struct {
+	ChargeID                string `json:"chargeId"`
+	PaymentBillingParams    `json:"billing"`
+	CreditCardDetailsParams `json:"creditCardDetails"`
 }
 
 type CreatePaymentResponse struct {
@@ -43,29 +44,34 @@ type CreatePaymentResponse struct {
 		FailReason  string  `json:"failReason"`
 	} `json:"payments"`
 
-	ErrorResponse
+	StatusResponse
 }
 
-func CreatePayment(paymentParams PaymentParams, oauthToken, ResourceToken string) (*CreatePaymentResponse, error) {
+func CreatePayment(paymentParams CreatePaymentParams, oauthToken, ResourceToken string) (*CreatePaymentResponse, error) {
 	bs, err := json.Marshal(paymentParams)
 
 	if err != nil {
 		return nil, err
 	}
 
-	op := newOperation(bs, ResourceServer+"/payments", methodPOST, resourceHeaders(oauthToken, ResourceToken))
+	op := newOperation(bs, ResourceServer+"/payments", methodPOST, createOperationHeaders(oauthToken, ResourceToken))
 
-	body, err := dispatch(op)
+	body, err := request(op)
 
 	if err != nil {
 		return nil, err
 	}
 
 	var response CreatePaymentResponse
+	response.Status = 200
 	err = json.Unmarshal(body, &response)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if response.Status != 200 {
+		return &response, fmt.Errorf("%s", response.Error)
 	}
 
 	return &response, nil

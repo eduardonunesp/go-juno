@@ -9,6 +9,7 @@ import (
 
 const (
 	methodPOST  = "POST"
+	methodPUT   = "PUT"
 	timeoutSecs = 10
 )
 
@@ -17,7 +18,7 @@ var (
 	ResourceServer = "https://sandbox.boletobancario.com/api-integration"
 )
 
-type ErrorResponse struct {
+type StatusResponse struct {
 	Status  int    `json:"status,omitempty"`
 	Error   string `json:"error,omitempty"`
 	Details []struct {
@@ -26,22 +27,18 @@ type ErrorResponse struct {
 	} `json:"details,omitempty"`
 }
 
-type operation struct {
+type operationParams struct {
 	headers map[string]string
 	method  string
 	path    string
 	body    []byte
 }
 
-func newOperation(body []byte, path, method string, headers map[string]string) operation {
-	return operation{body: body, path: path, method: method, headers: headers}
+func newOperation(body []byte, path, method string, headers map[string]string) operationParams {
+	return operationParams{body: body, path: path, method: method, headers: headers}
 }
 
-func newOperationWith(body []byte) operation {
-	return operation{body: body}
-}
-
-func resourceHeaders(authToken, resourceToken string) map[string]string {
+func createOperationHeaders(authToken, resourceToken string) map[string]string {
 	headers := make(map[string]string)
 	headers["Authorization"] = "Bearer " + authToken
 	headers["X-Api-Version"] = "2"
@@ -50,7 +47,7 @@ func resourceHeaders(authToken, resourceToken string) map[string]string {
 	return headers
 }
 
-func dispatch(operation operation) ([]byte, error) {
+func request(operation operationParams) ([]byte, error) {
 	timeout := time.Duration(timeoutSecs * time.Second)
 
 	httpClient := http.Client{

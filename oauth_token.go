@@ -13,7 +13,7 @@ type OauthTokenResponse struct {
 	UserName    string `json:"user_name"`
 	JTI         string `json:"jti"`
 
-	ErrorResponse
+	StatusResponse
 }
 
 func NewOauthToken(clientID, clientSecret string) (*OauthTokenResponse, error) {
@@ -23,7 +23,7 @@ func NewOauthToken(clientID, clientSecret string) (*OauthTokenResponse, error) {
 	headers["Authorization"] = "Basic " + basicToken
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-	body, err := dispatch(operation{
+	body, err := request(operationParams{
 		headers: headers,
 		path:    AuthServer + "/oauth/token",
 		body:    []byte("grant_type=client_credentials"),
