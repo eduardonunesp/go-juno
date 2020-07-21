@@ -36,7 +36,7 @@ func TestCreatePayment(t *testing.T) {
 	}, result.AccessToken, ResourceToken)
 
 	if err != nil {
-		t.Errorf("Failed to crete Payment cause %+v\n", err)
+		t.Errorf("Failed to create Payment cause %+v\n", err)
 	}
 
 	if response.Status != 200 {

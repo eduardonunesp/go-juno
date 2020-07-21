@@ -8,9 +8,11 @@ import (
 )
 
 const (
-	methodPOST  = "POST"
-	methodPUT   = "PUT"
-	timeoutSecs = 60
+	methodPOST   = "POST"
+	methodPUT    = "PUT"
+	methodGET    = "GET"
+	methodDELETE = "DELETE"
+	timeoutSecs  = 60
 )
 
 var (
@@ -19,8 +21,8 @@ var (
 )
 
 type StatusResponse struct {
-	Status  int    `json:"status,omitempty"`
-	Error   string `json:"error,omitempty"`
+	Status  interface{} `json:"status,omitempty"`
+	Error   string      `json:"error,omitempty"`
 	Details []struct {
 		Message   string `json:"message,omitempty"`
 		ErrorCode string `json:"errorCode,omitempty"`
