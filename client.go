@@ -10,7 +10,7 @@ import (
 const (
 	methodPOST  = "POST"
 	methodPUT   = "PUT"
-	timeoutSecs = 10
+	timeoutSecs = 60
 )
 
 var (
