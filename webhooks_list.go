@@ -14,25 +14,28 @@ type ListWebhookResponse struct {
 }
 
 func ListWebhook(oauthToken, resourceToken string) (*ListWebhookResponse, error) {
+	var response ListWebhookResponse
+	response.StatusResponse.Status = 200
+
 	url := ResourceServer + "/notifications/webhooks"
 	op := newOperation([]byte(""), url, methodGET, createOperationHeaders(oauthToken, resourceToken))
 
-	body, err := request(op)
+	body, status, err := request(op)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var response ListWebhookResponse
-	response.StatusResponse.Status = 200
-	err = json.Unmarshal(body, &response)
+	if status != response.StatusResponse.Status {
+		if err = json.Unmarshal(body, &response.StatusResponse); err != nil {
+			return nil, err
+		}
 
-	if err != nil {
-		return nil, err
-	}
-
-	if response.StatusResponse.Status != 200 {
 		return &response, fmt.Errorf("%s", response.Error)
+	}
+
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, err
 	}
 
 	return &response, nil

@@ -3,6 +3,7 @@ package gojuno
 import (
 	b64 "encoding/base64"
 	"encoding/json"
+	"fmt"
 )
 
 type OauthTokenResponse struct {
@@ -17,13 +18,16 @@ type OauthTokenResponse struct {
 }
 
 func NewOauthToken(clientID, clientSecret string) (*OauthTokenResponse, error) {
+	var response OauthTokenResponse
+	response.StatusResponse.Status = 200
+
 	basicToken := b64.StdEncoding.EncodeToString([]byte(clientID + ":" + clientSecret))
 
 	headers := make(map[string]string)
 	headers["Authorization"] = "Basic " + basicToken
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-	body, err := request(operationParams{
+	body, status, err := request(operationParams{
 		headers: headers,
 		path:    AuthServer + "/oauth/token",
 		body:    []byte("grant_type=client_credentials"),
@@ -34,7 +38,14 @@ func NewOauthToken(clientID, clientSecret string) (*OauthTokenResponse, error) {
 		return nil, err
 	}
 
-	var response OauthTokenResponse
+	if status != response.StatusResponse.Status {
+		if err := json.Unmarshal(body, &response.StatusResponse); err != nil {
+			return nil, err
+		}
+
+		return &response, fmt.Errorf("%s", response.Error)
+	}
+
 	err = json.Unmarshal(body, &response)
 
 	if err != nil {

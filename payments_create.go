@@ -48,6 +48,9 @@ type CreatePaymentResponse struct {
 }
 
 func CreatePayment(paymentParams CreatePaymentParams, oauthToken, ResourceToken string) (*CreatePaymentResponse, error) {
+	var response CreatePaymentResponse
+	response.Status = 200
+
 	bs, err := json.Marshal(paymentParams)
 
 	if err != nil {
@@ -56,22 +59,22 @@ func CreatePayment(paymentParams CreatePaymentParams, oauthToken, ResourceToken 
 
 	op := newOperation(bs, ResourceServer+"/payments", methodPOST, createOperationHeaders(oauthToken, ResourceToken))
 
-	body, err := request(op)
+	body, status, err := request(op)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var response CreatePaymentResponse
-	response.Status = 200
-	err = json.Unmarshal(body, &response)
+	if status != response.StatusResponse.Status {
+		if err := json.Unmarshal(body, &response.StatusResponse); err != nil {
+			return nil, err
+		}
 
-	if err != nil {
-		return nil, err
-	}
-
-	if response.Status != 200 {
 		return &response, fmt.Errorf("%s", response.Error)
+	}
+
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, err
 	}
 
 	return &response, nil

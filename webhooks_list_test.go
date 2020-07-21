@@ -1,6 +1,9 @@
 package gojuno
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
 	"os"
 	"testing"
 )
@@ -17,10 +20,16 @@ func TestListWebhook(t *testing.T) {
 		return
 	}
 
-	_, err = ListWebhook(result.AccessToken, ResourceToken)
+	response, err := ListWebhook(result.AccessToken, ResourceToken)
 
 	if err != nil {
 		t.Errorf("Failed to list webhooks cause %+v\n", err)
 		return
 	}
+
+	prettyJSON, err := json.MarshalIndent(response, "", "    ")
+	if err != nil {
+		log.Fatal("Failed to generate json", err)
+	}
+	fmt.Printf("%s\n", string(prettyJSON))
 }

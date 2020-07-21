@@ -49,7 +49,7 @@ func createOperationHeaders(authToken, resourceToken string) map[string]string {
 	return headers
 }
 
-func request(operation operationParams) ([]byte, error) {
+func request(operation operationParams) ([]byte, int, error) {
 	timeout := time.Duration(timeoutSecs * time.Second)
 
 	httpClient := http.Client{
@@ -63,13 +63,13 @@ func request(operation operationParams) ([]byte, error) {
 	}
 
 	if err != nil {
-		return nil, err
+		return nil, 500, err
 	}
 
 	response, err := httpClient.Do(request)
 
 	if err != nil {
-		return nil, err
+		return nil, response.StatusCode, err
 	}
 
 	defer response.Body.Close()
@@ -77,8 +77,8 @@ func request(operation operationParams) ([]byte, error) {
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		return nil, err
+		return nil, response.StatusCode, err
 	}
 
-	return body, nil
+	return body, response.StatusCode, nil
 }

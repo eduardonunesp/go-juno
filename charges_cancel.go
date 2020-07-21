@@ -14,27 +14,23 @@ type CancelChargeResponse struct {
 }
 
 func CancelCharge(cancelChargeParams CancelChargeParams, oauthToken, resourceToken string) (*CancelChargeResponse, error) {
+	var response CancelChargeResponse
+	response.StatusResponse.Status = 204
+
 	url := fmt.Sprintf("%s/charges/%s/cancelation", ResourceServer, cancelChargeParams.ID)
 	op := newOperation([]byte(""), url, methodPUT, createOperationHeaders(oauthToken, resourceToken))
 
-	body, err := request(op)
+	body, status, err := request(op)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var response CancelChargeResponse
-	response.Status = 204
-
-	if len(body) != 0 {
-		err = json.Unmarshal(body, &response)
-
-		if err != nil {
+	if status != response.StatusResponse.Status {
+		if err = json.Unmarshal(body, &response.StatusResponse); err != nil {
 			return nil, err
 		}
-	}
 
-	if response.Status != 204 {
 		return &response, fmt.Errorf("%s", response.Error)
 	}
 
