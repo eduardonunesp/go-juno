@@ -69,7 +69,7 @@ func request(operation operationParams) ([]byte, int, error) {
 	response, err := httpClient.Do(request)
 
 	if err != nil {
-		return nil, response.StatusCode, err
+		return nil, 500, err
 	}
 
 	defer response.Body.Close()
