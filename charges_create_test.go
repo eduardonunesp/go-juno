@@ -30,7 +30,7 @@ func TestCreateCharge(t *testing.T) {
 	}, result.AccessToken, ResourceToken)
 
 	if err != nil {
-		t.Errorf("Failed to create charge cause %+v\n", err)
+		t.Errorf("Failed to create charge cause %+v %+v\n", err, response)
 		return
 	}
 
